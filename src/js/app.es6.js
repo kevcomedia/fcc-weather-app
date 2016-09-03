@@ -11,9 +11,15 @@
     return {
       renderLocation(value) { location.text(value); },
       renderWeather(value) { weather.text(value); },
-      renderTemperature(value) { temperature.text(value); }
+      renderTemperature(value) { temperature.html(value); }
     };
   })();
+
+  let temperature = {
+    setF(fahrenheit) { this.temperatureF = fahrenheit; },
+    getF() { return `${this.temperatureF} &deg;F`; },
+    getC() { return `${(this.temperatureF - 32) / 1.8} &deg;C`; }
+  };
 
   if (!navigator.geolocation) {
     // Perhaps a message to notify that the browser doesn't support geolocation.
@@ -33,9 +39,10 @@
       $.getJSON(forecastUrl, apiSuccess);
 
       function apiSuccess(data) {
-        const {summary: weather, temperature} = data.currently;
-        view.renderWeather(weather);
-        view.renderTemperature(temperature);
+        temperature.setF(data.currently.temperature);
+
+        view.renderWeather(data.currently.summary);
+        view.renderTemperature(temperature.getC());
       }
     }
 
