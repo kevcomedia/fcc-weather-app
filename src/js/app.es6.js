@@ -17,8 +17,8 @@
 
   let temperature = {
     setF(fahrenheit) { this.temperatureF = fahrenheit; },
-    getF() { return `${this.temperatureF} &deg;F`; },
-    getC() { return `${(this.temperatureF - 32) / 1.8} &deg;C`; }
+    getF() { return `${this.temperatureF.toFixed(2)} &deg;F`; },
+    getC() { return `${((this.temperatureF - 32) / 1.8).toFixed(2)} &deg;C`; }
   };
 
   if (!navigator.geolocation) {
