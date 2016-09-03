@@ -35,8 +35,11 @@
     function fetchWeatherData({latitude, longitude}) {
       // Yep, this shouldn't really be here.
       const apiKey = "f44f41703dd8e5badaaba8f3b66b590d";
-      const forecastUrl = `https://crossorigin.me/https://api.forecast.io/forecast/${apiKey}/${latitude},${longitude}`;
-      $.getJSON(forecastUrl, apiSuccess);
+      $.ajax({
+        url: `https://api.forecast.io/forecast/${apiKey}/${latitude},${longitude}`,
+        dataType: "jsonp",
+        success: apiSuccess
+      });
 
       function apiSuccess(data) {
         temperature.setF(data.currently.temperature);
