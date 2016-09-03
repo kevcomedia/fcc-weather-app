@@ -5,11 +5,13 @@
   // Interface for manipulating the page.
   const view = (function View() {
     const location = $(".details-location");
+    const weather = $(".details-weather");
+    const temperature = $(".details-temperature");
 
     return {
-      setLocation(value) {
-        location.text(value);
-      }
+      renderLocation(value) { location.text(value); },
+      renderWeather(value) { weather.text(value); },
+      renderTemperature(value) { temperature.text(value); }
     };
   })();
 
@@ -18,7 +20,7 @@
     return;
   }
 
-  // navigator.geolocation.getCurrentPosition(geolocationSuccess);
+  navigator.geolocation.getCurrentPosition(geolocationSuccess);
 
   function geolocationSuccess(position) {
     fetchWeatherData(position.coords);
@@ -28,10 +30,12 @@
       // Yep, this shouldn't really be here.
       const apiKey = "f44f41703dd8e5badaaba8f3b66b590d";
       const forecastUrl = `https://crossorigin.me/https://api.forecast.io/forecast/${apiKey}/${latitude},${longitude}`;
-      // $.getJSON(forecastUrl, apiSuccess);
+      $.getJSON(forecastUrl, apiSuccess);
 
       function apiSuccess(data) {
-        alert("Success");
+        const {summary: weather, temperature} = data.currently;
+        view.renderWeather(weather);
+        view.renderTemperature(temperature);
       }
     }
 
@@ -45,13 +49,12 @@
         // https://developers.google.com/maps/documentation/geocoding/intro#ReverseGeocoding
         // for further information regarding the API.
 
-        let {results} = data;
         // `results` are arranged from more specific to less specific address.
         // We want the most specific address of type "locality"; hence [0].
         let {formatted_address: location}
-          = results.filter(result => result.types.includes("locality"))[0];
+          = data.results.filter(result => result.types.includes("locality"))[0];
 
-        view.setLocation(location);
+        view.renderLocation(location);
       }
     }
   }
