@@ -3,8 +3,20 @@ const babel = require("gulp-babel");
 const rename = require("gulp-regex-rename");
 const browserSync = require("browser-sync").create();
 
+const jshint = require("gulp-jshint");
+const stylish = require("jshint-stylish");
+
+/* Lint */
+gulp.task("lint", function() {
+  return gulp.src("src/js/**/*.es6.js")
+    .pipe(jshint({
+        esversion: 6
+    }))
+    .pipe(jshint.reporter(stylish));
+});
+
 /* Compile */
-gulp.task("babel", function() {
+gulp.task("babel", ["lint"], function() {
   return gulp.src("src/js/**/*.es6.js")
     .pipe(babel({
       presets: ["es2015"]
