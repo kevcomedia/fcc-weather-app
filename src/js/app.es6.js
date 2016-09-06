@@ -29,15 +29,34 @@
     const temperatureValue = $(".details-temperature-value");
     const temperatureUnit = $(".details-temperature-unit");
 
-    return {
-      renderLocation(value) { location.text(value); },
-      renderWeather(value) { weather.text(value); },
-      renderTemperature({value, unit}) {
-        temperatureValue.text(value.toFixed(2));
-        temperatureUnit.html(unit);
-        temperatureUnit.data("unit", unit);
+    temperatureUnit.click(function toggleTemperature() {
+      if (temperatureUnit.data("unit") == "&deg;F") {
+        renderTemperature(temperature.getCelsius());
       }
+      else {
+        renderTemperature(temperature.getFahrenheit());
+      }
+    });
+
+    return {
+      renderLocation,
+      renderWeather,
+      renderTemperature
     };
+
+    function renderLocation(value) {
+      location.text(value);
+    }
+
+    function renderWeather(value) {
+      weather.text(value);
+    }
+
+    function renderTemperature({value, unit}) {
+      temperatureValue.text(value.toFixed(2));
+      temperatureUnit.html(unit);
+      temperatureUnit.data("unit", unit);
+    }
   })();
 
   if (!navigator.geolocation) {
