@@ -1,4 +1,5 @@
 const gulp = require("gulp");
+const gulpIf = require("gulp-if");
 
 const jshint = require("gulp-jshint");
 const stylish = require("jshint-stylish");
@@ -7,6 +8,10 @@ const sass = require("gulp-sass");
 const autoprefixer = require("gulp-autoprefixer");
 const babel = require("gulp-babel");
 const rename = require("gulp-regex-rename");
+
+const useref = require("gulp-useref");
+const cssnano = require("gulp-cssnano");
+const uglify = require("gulp-uglify");
 
 const browserSync = require("browser-sync").create();
 
@@ -52,6 +57,16 @@ gulp.task("browserSync", function() {
     }
   });
 });
+
+/* Build */
+gulp.task("useref", function() {
+  return gulp.src("src/*.html")
+    .pipe(useref())
+    .pipe(gulpIf("*.js", uglify()))
+    .pipe(gulpIf("*.css", cssnano()))
+    .pipe(gulp.dest("dist"));
+});
+
 
 gulp.task("watch", ["sass", "babel", "browserSync"], function() {
   gulp.watch("src/scss/**/*.scss", ["sass"]);
