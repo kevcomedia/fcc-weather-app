@@ -24,6 +24,7 @@
 
   // Interface for manipulating the page.
   const view = (function View() {
+    const icon = $("#icon-canvas");
     const location = $(".details-location");
     const weather = $(".details-weather");
     const temperatureValue = $(".details-temperature-value");
@@ -39,10 +40,17 @@
     });
 
     return {
+      renderIcon,
       renderLocation,
       renderWeather,
       renderTemperature
     };
+
+    function renderIcon(value) {
+      var skycons = new Skycons({color: "black"});
+      skycons.add("icon-canvas", value);
+      skycons.play();
+    }
 
     function renderLocation(value) {
       location.text(value);
@@ -82,6 +90,7 @@
       function apiSuccess(data) {
         temperature.setFahrenheit(data.currently.temperature);
 
+        view.renderIcon(data.currently.icon);
         view.renderWeather(data.currently.summary);
         view.renderTemperature(temperature.getFahrenheit());
       }
