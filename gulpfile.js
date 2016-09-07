@@ -15,6 +15,8 @@ const uglify = require("gulp-uglify");
 const del = require("del");
 const runSequence = require("run-sequence");
 
+const deploy = require("gulp-gh-pages");
+
 const browserSync = require("browser-sync").create();
 
 /* Lint */
@@ -71,12 +73,16 @@ gulp.task("useref", function() {
 
 gulp.task("clean:dist", function() {
   return del.sync("dist");
-})
+});
 
 gulp.task("build", function(callback) {
   runSequence("clean:dist", ["sass", "babel"], "useref", callback);
-})
+});
 
+gulp.task("deploy", ["build"], function() {
+  return gulp.src("dist/**/*")
+    .pipe(deploy());
+});
 
 gulp.task("watch", ["sass", "babel", "browserSync"], function() {
   gulp.watch("src/scss/**/*.scss", ["sass"]);
