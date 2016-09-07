@@ -12,6 +12,8 @@ const rename = require("gulp-regex-rename");
 const useref = require("gulp-useref");
 const cssnano = require("gulp-cssnano");
 const uglify = require("gulp-uglify");
+const del = require("del");
+const runSequence = require("run-sequence");
 
 const browserSync = require("browser-sync").create();
 
@@ -66,6 +68,14 @@ gulp.task("useref", function() {
     .pipe(gulpIf("*.css", cssnano()))
     .pipe(gulp.dest("dist"));
 });
+
+gulp.task("clean:dist", function() {
+  return del.sync("dist");
+})
+
+gulp.task("build", function(callback) {
+  runSequence("clean:dist", ["sass", "babel"], "useref", callback);
+})
 
 
 gulp.task("watch", ["sass", "babel", "browserSync"], function() {
