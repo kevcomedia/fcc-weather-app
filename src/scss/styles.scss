@@ -1,0 +1,56 @@
+$middle-margin: 30px;
+
+@mixin breakpoint($size) {
+  @if $size == mobile {
+    @media(max-width: 768px) { @content; }
+  }
+}
+
+body {
+  font-family: "Open Sans", sans-serif;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+}
+
+h1 {
+  text-align: center;
+  flex: 100%;
+}
+
+.icon {
+  margin: auto;
+  margin-right: $middle-margin;
+
+  @include breakpoint(mobile) {
+    margin-right: auto;
+    flex: 100%;
+  }
+
+  #icon-canvas {
+    display: block;
+    margin: auto;
+  }
+}
+
+.details {
+  margin: auto;
+  margin-left: $middle-margin;
+
+  @include breakpoint(mobile) {
+    text-align: center;
+    margin-left: auto;
+    flex: 100%;
+  }
+
+  .details-temperature-unit {
+    border: 1px solid gray;
+    border-radius: 3px;
+    background-color: inherit;
+  }
+}
+
+footer {
+  text-align: center;
+  flex: 100%;
+}

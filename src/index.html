@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Local Weather App</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+  <!-- build:css css/styles.min.css -->
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <!-- endbuild -->
+</head>
+
+<body>
+  <h1>Local Weather App</h1>
+
+  <div class="icon">
+    <canvas id="icon-canvas"></canvas>
+  </div>
+  <div class="details">
+    <p class="details-location">Location</p>
+    <p class="details-weather">Weather</p>
+    <p class="details-temperature">
+      <span class="details-temperature-value">Temperature</span>
+      <button class="details-temperature-unit">Unit</button>
+    </p>
+  </div>
+
+  <footer>
+    <p><small>Powered by <a href="http://forecast.io" target="_blank">forecast.io</a></small></p>
+  </footer>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <!-- build:js js/app.min.js -->
+  <script src="js/skycons.js"></script>
+  <script src="js/app.js"></script>
+  <!-- endbuild -->
+</body>
+
+</html>
