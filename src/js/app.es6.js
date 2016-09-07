@@ -2,24 +2,62 @@
 (function WeatherApp() {
   "use strict";
 
+  const temperature = (function Temperature() {
+    let temperatureF;
+
+    return {
+      setFahrenheit(value) { temperatureF = value; },
+      getFahrenheit() {
+        return {
+          value: temperatureF,
+          unit: "&deg;F"
+        };
+      },
+      getCelsius() {
+        return {
+          value: (temperatureF - 32) / 1.8,
+          unit: "&deg;C"
+        };
+      }
+    };
+  })();
+
   // Interface for manipulating the page.
   const view = (function View() {
     const location = $(".details-location");
     const weather = $(".details-weather");
-    const temperature = $(".details-temperature");
+    const temperatureValue = $(".details-temperature-value");
+    const temperatureUnit = $(".details-temperature-unit");
+
+    temperatureUnit.click(function toggleTemperature() {
+      if (temperatureUnit.data("unit") == "&deg;F") {
+        renderTemperature(temperature.getCelsius());
+      }
+      else {
+        renderTemperature(temperature.getFahrenheit());
+      }
+    });
 
     return {
-      renderLocation(value) { location.text(value); },
-      renderWeather(value) { weather.text(value); },
-      renderTemperature(value) { temperature.html(value); }
+      renderLocation,
+      renderWeather,
+      renderTemperature
     };
-  })();
 
-  let temperature = {
-    setF(fahrenheit) { this.temperatureF = fahrenheit; },
-    getF() { return `${this.temperatureF.toFixed(2)} &deg;F`; },
-    getC() { return `${((this.temperatureF - 32) / 1.8).toFixed(2)} &deg;C`; }
-  };
+    function renderLocation(value) {
+      location.text(value);
+    }
+
+    function renderWeather(value) {
+      weather.text(value);
+    }
+
+    function renderTemperature({value, unit}) {
+      temperatureValue.text(value.toFixed(2));
+      temperatureUnit.html(unit);
+      temperatureUnit.data("unit", unit);
+    }
+  })();
 
   if (!navigator.geolocation) {
     // Perhaps a message to notify that the browser doesn't support geolocation.
@@ -42,10 +80,10 @@
       });
 
       function apiSuccess(data) {
-        temperature.setF(data.currently.temperature);
+        temperature.setFahrenheit(data.currently.temperature);
 
         view.renderWeather(data.currently.summary);
-        view.renderTemperature(temperature.getC());
+        view.renderTemperature(temperature.getFahrenheit());
       }
     }
 
