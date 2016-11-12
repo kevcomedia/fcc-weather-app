@@ -82,7 +82,7 @@
       // Yep, this shouldn't really be here.
       const apiKey = "f44f41703dd8e5badaaba8f3b66b590d";
       $.ajax({
-        url: `https://api.forecast.io/forecast/${apiKey}/${latitude},${longitude}`,
+        url: `https://api.darksky.net/forecast/${apiKey}/${latitude},${longitude}`,
         dataType: "jsonp",
         success: apiSuccess
       });
