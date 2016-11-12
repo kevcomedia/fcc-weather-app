@@ -1,2 +1,5 @@
 node_modules
 dist
+.publish
+src/css/styles.css
+src/js/app.js
